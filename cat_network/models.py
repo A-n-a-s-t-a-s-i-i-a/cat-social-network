@@ -42,7 +42,7 @@ list_of_breeds = [
 ]
 
 class CatUser(AbstractUser):
-    age = models.IntegerField(default=0)
+    age = models.PositiveIntegerField(default=0)
     breed = models.CharField(max_length=50, choices=list_of_breeds)
     bio = models.TextField()
     followers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='catusers', blank=True)
@@ -70,7 +70,7 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.author} - {self.post} - {self.text}"
+        return f"{self.post} - {self.text}"
 
 
 class Like(models.Model):
