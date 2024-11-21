@@ -42,7 +42,7 @@ list_of_breeds = [
 ]
 
 class CatUser(AbstractUser):
-    age = models.IntegerField()
+    age = models.IntegerField(default=0)
     breed = models.CharField(max_length=50, choices=list_of_breeds)
     bio = models.TextField()
     followers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='catusers', blank=True)
