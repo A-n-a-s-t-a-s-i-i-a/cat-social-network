@@ -11,8 +11,22 @@
     {% endif %}
     <p>{{ post.body }}</p>
     <div>
-      <input type="submit" value="🩷 {{ post.like_set.count }}">
-      <input type="submit" value="💬 {{ post.comment_set.count }}">
+      <div>
+        <form method="post" action="{% url 'cat_network:toggle-like' %}">
+          {% csrf_token %}
+          <input type="hidden" name="post_id" value="{{ post.id }}">
+          {{ like_form }}
+          <button type="submit">
+              {% if post.id in user_liked_posts %}
+                  🩷
+              {% else %}
+                  🖤
+              {% endif %}
+              {{ post.like_set.count }}
+          </button>
+        </form>
+        <a href="{% url 'cat_network:comment-list' pk=post.id %}">💬 {{ post.comment_set.count }}</a>
+      </div>
     </div>
   </div>
 {% endblock %}

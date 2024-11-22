@@ -26,7 +26,7 @@
               {{ post.like_set.count }}
           </button>
         </form>
-        <input type="submit" value="💬 {{ post.comment_set.count }}">
+        <a href="{% url 'cat_network:comment-list' pk=post.id %}">💬 {{ post.comment_set.count }}</a>
       </div>
     </div>
   {% endfor %}

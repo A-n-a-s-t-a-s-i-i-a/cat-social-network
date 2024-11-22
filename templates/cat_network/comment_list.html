@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block content %}
+  {% for comment in comments %}
+    <div>{{ comment.author }} - {{ comment.text }}</div>
+  {% endfor %}
+  <a href="{% url 'cat_network:comment-create' pk=post.id %}">Create Comment</a>
+{% endblock %}

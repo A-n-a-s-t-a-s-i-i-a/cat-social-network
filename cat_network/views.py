@@ -40,6 +40,12 @@ class PostDetailView(DetailView):
     model = Post
     template_name = "cat_network/post_detail.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_liked_posts = Like.objects.filter(user=self.request.user).values_list('post_id', flat=True)
+        context['user_liked_posts'] = set(user_liked_posts)
+        return context
+
 
 class PostCreateView(CreateView):
     model = Post
@@ -64,4 +70,33 @@ class ToggleLikeView(View):
 
         referer_url = request.META.get('HTTP_REFERER', '/')
         return HttpResponseRedirect(f"{referer_url}#post-{post.id}")
+
+
+class CommentListView(ListView):
+    model = Comment
+    template_name = "cat_network/comment_list.html"
+    context_object_name = 'comments'
+
+    def get_queryset(self):
+        post_id = self.kwargs.get('pk')
+        return Comment.objects.filter(post_id=post_id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['post'] = Post.objects.get(pk=self.kwargs.get('pk'))  # Передаем объект поста
+        return context
+
+
+class CommentCreateView(CreateView):
+    model = Comment
+    fields = ("text",)
+    template_name = "cat_network/comment_create.html"
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.instance.post = Post.objects.get(pk=self.kwargs.get('pk'))
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy("cat_network:comment-list",   kwargs={"pk": self.kwargs["pk"]})
 

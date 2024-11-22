@@ -1,6 +1,7 @@
 from django.urls import path
 
-from cat_network.views import index, PostListView, PostDetailView, PostCreateView, ToggleLikeView
+from cat_network.views import index, PostListView, PostDetailView, PostCreateView, ToggleLikeView, CommentListView, \
+    CommentCreateView
 
 urlpatterns = [
     path('', index, name='index'),
@@ -8,6 +9,8 @@ urlpatterns = [
     path("posts/<int:pk>/", PostDetailView.as_view(), name="post-detail"),
     path("posts/create/", PostCreateView.as_view(), name="post-create"),
     path('toggle-like/', ToggleLikeView.as_view(), name='toggle-like'),
+    path("posts/<int:pk>/comments/", CommentListView.as_view(), name="comment-list"),
+    path("posts/<int:pk>/comments/create/", CommentCreateView.as_view(), name="comment-create"),
 ]
 
 
