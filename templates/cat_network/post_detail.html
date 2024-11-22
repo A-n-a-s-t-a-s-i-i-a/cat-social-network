@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}
+  <title>{{ post.title }}</title>
+{% endblock %}
+
+{% block content %}
+  <div>
+    <h2>{{ post.title }}</h2>
+    {% if post.image %}
+      <img src="{{ post.image.url }}" alt="">
+    {% endif %}
+    <p>{{ post.body }}</p>
+    <div>
+      <input type="submit" value="🩷 {{ post.like_set.count }}">
+      <input type="submit" value="💬 {{ post.comment_set.count }}">
+    </div>
+  </div>
+{% endblock %}

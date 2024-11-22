@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}
+  <title>Posts</title>
+{% endblock %}
+
+{% block content %}
+  <h1>All Posts:</h1>
+  <a href="{% url 'cat_network:post-create' %}">Create New Post</a>
+  {% for post in post_list %}
+    <div>
+      <h2><a href="{% url 'cat_network:post-detail' pk=post.id %}">{{ post.title }}</a></h2>
+      {% if post.image %}
+        <img src="{{ post.image.url }}" alt="" width="300px">
+      {% endif %}
+      <div>
+        <input type="submit" value="🩷 {{ post.like_set.count }}">
+        <input type="submit" value="💬 {{ post.comment_set.count }}">
+      </div>
+    </div>
+  {% endfor %}
+  
+{% endblock %}
