@@ -3,11 +3,12 @@ from audioop import reverse
 from django.contrib.auth import login
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
+from django.template.defaultfilters import title
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from cat_network.forms import CatUserCreationForm
+from cat_network.forms import CatUserCreationForm, PostSearchForm
 from cat_network.models import Post, Comment, Like, CatUser
 
 
@@ -29,13 +30,24 @@ def index(request) -> HttpResponse:
 class PostListView(ListView):
     model = Post
     template_name = "cat_network/post_list.html"
-    queryset = Post.objects.prefetch_related('like_set')
+    paginate_by = 5
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user_liked_posts = Like.objects.filter(user=self.request.user).values_list('post_id', flat=True)
         context['user_liked_posts'] = set(user_liked_posts)
+        title = self.request.GET.get('title', "")
+        context['search_form'] = PostSearchForm(
+            initial={"title": title}
+        )
         return context
+
+    def get_queryset(self):
+        queryset = Post.objects.prefetch_related('like_set')
+        form = PostSearchForm(self.request.GET)
+        if form.is_valid():
+            return queryset.filter(title__icontains=form.cleaned_data['title'])
+        return queryset
 
 
 class PostDetailView(DetailView):
