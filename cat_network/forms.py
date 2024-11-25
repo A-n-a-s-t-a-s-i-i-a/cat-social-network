@@ -17,3 +17,12 @@ class PostSearchForm(forms.Form):
         label='',
         widget=forms.TextInput(attrs={'placeholder': 'Search by title'}),
     )
+
+
+class CatSearchForm(forms.Form):
+    username = forms.CharField(
+        max_length=100,
+        required=False,
+        label='',
+        widget=forms.TextInput(attrs={'placeholder': 'Search by username'}),
+    )

@@ -4,12 +4,31 @@
 {% endblock %}
 
 {% block content %}
+  <form method="get" action="" class="form-inline">
+    {{ search_form.as_p }}
+    <input type="submit" value="👀">
+  </form>
   {% for cat in cat_users %}
     <div>
       {% if cat.profile_picture %}
         <img src="{{ cat.profile_picture.url }}" alt="" width="100px">
       {% endif %}
-      <h2><a href="#">{{ cat.username }}</a></h2>
+      <h2>
+        <a href="{% url 'cat_network:cat-detail' pk=cat.id %}">{{ cat.username }}</a>
+        {% if catuser.id != cat.id %}
+          {% if catuser in cat.followers.all %}
+            <form action="{% url 'cat_network:follow-catuser' pk=cat.id %}" method="post">
+              {% csrf_token %}
+              <input type="submit" value="Unfollow">
+            </form>
+          {% else %}
+            <form action="{% url 'cat_network:follow-catuser' pk=cat.id %}" method="post">
+              {% csrf_token %}
+              <input type="submit" value="Follow">
+            </form>
+          {% endif %}
+        {% endif %}
+      </h2>
     </div>
   {% endfor %}
 {% endblock %}

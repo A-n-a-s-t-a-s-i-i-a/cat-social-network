@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}
+  <title>{{ catuser.username }}</title>
+{% endblock %}
+
+{% block content %}
+  <div>
+    <h2>{{ catuser.username }}</h2>
+    {% if catuser.profile_picture %}
+      <img src="{{ catuser.profile_picture.url }}" alt="">
+    {% endif %}
+    {% if catuser.age %}
+      <p>Age: {{ catuser.age }}</p>
+    {% endif %}
+    {% if catuser.breed %}
+      <p>Breed: {{ catuser.breed }}</p>
+    {% endif %}
+    {% if catuser.bio %}
+      <p>Bio: {{ catuser.bio }}</p>
+    {% endif %}
+    <a href="#">Followers: {{ catuser.followers.count }}</a>
+  </div>
+{% endblock %}

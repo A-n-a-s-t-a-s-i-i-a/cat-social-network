@@ -1,14 +1,15 @@
 from audioop import reverse
 
-from django.contrib.auth import login
+from django.contrib.auth import login, get_user_model
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
-from django.template.defaultfilters import title
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from cat_network.forms import CatUserCreationForm, PostSearchForm
+from cat_network.forms import CatUserCreationForm, PostSearchForm, CatSearchForm
 from cat_network.models import Post, Comment, Like, CatUser
 
 
@@ -34,8 +35,11 @@ class PostListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        user_liked_posts = Like.objects.filter(user=self.request.user).values_list('post_id', flat=True)
-        context['user_liked_posts'] = set(user_liked_posts)
+        if self.request.user.is_authenticated:
+            user_liked_posts = Like.objects.filter(user=self.request.user).values_list('post_id', flat=True)
+            context['user_liked_posts'] = set(user_liked_posts)
+        else:
+            context['user_liked_posts'] = set()
         title = self.request.GET.get('title', "")
         context['search_form'] = PostSearchForm(
             initial={"title": title}
@@ -50,7 +54,7 @@ class PostListView(ListView):
         return queryset
 
 
-class PostDetailView(DetailView):
+class PostDetailView(LoginRequiredMixin, DetailView):
     model = Post
     template_name = "cat_network/post_detail.html"
 
@@ -61,7 +65,7 @@ class PostDetailView(DetailView):
         return context
 
 
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     fields = ("title", "body", "image")
     success_url = reverse_lazy("cat_network:post-list")
@@ -72,7 +76,7 @@ class PostCreateView(CreateView):
         return super().form_valid(form)
 
 
-class ToggleLikeView(View):
+class ToggleLikeView(LoginRequiredMixin, View):
     def post(self, request):
         post_id = request.POST.get('post_id')
         post = get_object_or_404(Post, id=post_id)
@@ -101,7 +105,7 @@ class CommentListView(ListView):
         return context
 
 
-class CommentCreateView(CreateView):
+class CommentCreateView(LoginRequiredMixin, CreateView):
     model = Comment
     fields = ("text",)
     template_name = "cat_network/comment_create.html"
@@ -115,7 +119,7 @@ class CommentCreateView(CreateView):
         return reverse_lazy("cat_network:comment-list",   kwargs={"pk": self.kwargs["pk"]})
 
 
-class CommentUpdateView(UpdateView):
+class CommentUpdateView(LoginRequiredMixin, UpdateView):
     model = Comment
     fields = ("text",)
     template_name = "cat_network/comment_create.html"
@@ -124,7 +128,7 @@ class CommentUpdateView(UpdateView):
         return reverse_lazy("cat_network:comment-list",   kwargs={"pk": self.kwargs["pk"]})
 
 
-class CommentDeleteView(DeleteView):
+class CommentDeleteView(LoginRequiredMixin, DeleteView):
     model = Comment
     template_name = "cat_network/comment_delete.html"
 
@@ -136,6 +140,25 @@ class CatUserListView(ListView):
     model = CatUser
     template_name = "cat_network/cat_list.html"
     context_object_name = 'cat_users'
+    paginate_by = 5
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        username = self.request.GET.get('username', "")
+        context['search_form'] = CatSearchForm(
+            initial={"username": username}
+        )
+        context["catuser"] = self.request.user
+        return context
+
+    def get_queryset(self):
+        queryset = get_user_model().objects.all()
+        form = CatSearchForm(self.request.GET)
+        if form.is_valid():
+            return queryset.filter(username__icontains=form.cleaned_data['username'])
+        return queryset
+
+
 
 
 class CatUserCreateView(CreateView):
@@ -150,3 +173,21 @@ class CatUserCreateView(CreateView):
         user.save()
         login(self.request, user)
         return redirect(self.success_url)
+
+
+class CatUserDetailView(DetailView):
+    model = CatUser
+    template_name = "cat_network/cat_detail.html"
+
+
+@login_required
+def follow_catuser(request, pk):
+    cat = get_object_or_404(CatUser, pk=pk)
+    print(f"ID cat: {pk}")
+    catuser = request.user
+    print(f"ID catuser: {catuser.id}")
+    if catuser in cat.followers.all():
+        cat.followers.remove(catuser)
+    else:
+        cat.followers.add(catuser)
+    return redirect("cat_network:cat-list")
