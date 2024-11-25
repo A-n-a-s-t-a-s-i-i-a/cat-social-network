@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}
+  <title>Cats</title>
+{% endblock %}
+
+{% block content %}
+  {% for cat in cat_users %}
+    <div>
+      {% if cat.profile_picture %}
+        <img src="{{ cat.profile_picture.url }}" alt="" width="100px">
+      {% endif %}
+      <h2><a href="#">{{ cat.username }}</a></h2>
+    </div>
+  {% endfor %}
+{% endblock %}

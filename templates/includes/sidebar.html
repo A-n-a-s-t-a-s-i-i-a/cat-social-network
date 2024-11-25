@@ -1,5 +1,16 @@
+{% if user.is_authenticated %}
+  <h2>Cat: <a href="#">{{ user.username }}</a></h2>
+  <form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+  </form>
+{% else %}
+  <a href="{% url 'login' %}">Sign In</a>
+  <a href="{% url 'cat_network:registration' %}">Sign Up</a>
+{% endif %}
+
 <ul>
   <li><a href="/">Home page</a></li>
   <li><a href="{% url 'cat_network:post-list' %}">Posts</a></li>
-  <li><a href="#">Cats</a></li>
+  <li><a href="{% url 'cat_network:cat-list' %}">Cats</a></li>
 </ul>

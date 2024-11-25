@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+{% block title %}
+  <title>Comments</title>
+{% endblock %}
 {% block content %}
   {% for comment in comments %}
     <div>{{ comment.author }} - {{ comment.text }}</div>

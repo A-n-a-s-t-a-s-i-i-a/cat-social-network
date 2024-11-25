@@ -1,11 +1,13 @@
 from audioop import reverse
 
+from django.contrib.auth import login
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView
 
+from cat_network.forms import CatUserCreationForm
 from cat_network.models import Post, Comment, Like, CatUser
 
 
@@ -100,3 +102,20 @@ class CommentCreateView(CreateView):
     def get_success_url(self):
         return reverse_lazy("cat_network:comment-list",   kwargs={"pk": self.kwargs["pk"]})
 
+
+class CatUserListView(ListView):
+    model = CatUser
+    template_name = "cat_network/cat_list.html"
+    context_object_name = 'cat_users'
+
+
+class CatUserCreateView(CreateView):
+    model = CatUser
+    form_class = CatUserCreationForm
+    template_name = "registration/registration_form.html"
+    success_url = reverse_lazy("cat_network:index")
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect(self.success_url)
