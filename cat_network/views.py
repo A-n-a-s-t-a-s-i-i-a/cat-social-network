@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from cat_network.forms import CatUserCreationForm
 from cat_network.models import Post, Comment, Like, CatUser
@@ -103,6 +103,23 @@ class CommentCreateView(CreateView):
         return reverse_lazy("cat_network:comment-list",   kwargs={"pk": self.kwargs["pk"]})
 
 
+class CommentUpdateView(UpdateView):
+    model = Comment
+    fields = ("text",)
+    template_name = "cat_network/comment_create.html"
+
+    def get_success_url(self):
+        return reverse_lazy("cat_network:comment-list",   kwargs={"pk": self.kwargs["pk"]})
+
+
+class CommentDeleteView(DeleteView):
+    model = Comment
+    template_name = "cat_network/comment_delete.html"
+
+    def get_success_url(self):
+        return reverse_lazy("cat_network:comment-list", kwargs={"pk": self.kwargs["pk"]})
+
+
 class CatUserListView(ListView):
     model = CatUser
     template_name = "cat_network/cat_list.html"
@@ -117,5 +134,7 @@ class CatUserCreateView(CreateView):
 
     def form_valid(self, form):
         user = form.save()
+        user.profile_picture = self.request.FILES.get('profile_picture')
+        user.save()
         login(self.request, user)
         return redirect(self.success_url)

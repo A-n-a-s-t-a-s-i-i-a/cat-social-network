@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+  Are YOU SSSUURREEE?
+  <form action="" method="post" novalidate>
+    {% csrf_token %}
+    <input type="submit" value="Delete">
+    <input type="button" onclick="history.back();" value="Cancel">
+  </form>
+{% endblock %}

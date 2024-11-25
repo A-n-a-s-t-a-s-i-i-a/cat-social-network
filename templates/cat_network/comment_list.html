@@ -4,7 +4,13 @@
 {% endblock %}
 {% block content %}
   {% for comment in comments %}
-    <div>{{ comment.author }} - {{ comment.text }}</div>
+    <div>
+      {{ comment.author }} - {{ comment.text }}
+      {% if comment.author.id == user.id %}
+        <a href="{% url 'cat_network:comment-update' pk=post.id %}">Update Comment</a>
+        <a href="{% url 'cat_network:comment-delete' pk=post.id %}">Delete Comment</a>
+      {% endif %}
+    </div>
   {% endfor %}
   <a href="{% url 'cat_network:comment-create' pk=post.id %}">Create Comment</a>
 {% endblock %}
