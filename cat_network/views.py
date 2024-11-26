@@ -68,12 +68,35 @@ class PostDetailView(LoginRequiredMixin, DetailView):
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     fields = ("title", "body", "image")
-    success_url = reverse_lazy("cat_network:post-list")
     template_name = "cat_network/post_create.html"
 
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
+
+    def get_success_url(self):
+        next_page = self.request.GET.get('next', 'post-list')
+        if next_page == 'cat-detail':
+            return reverse_lazy("cat_network:cat-detail", kwargs={"pk": self.request.user.id})
+        return reverse_lazy("cat_network:post-list")
+
+
+class PostUpdateView(LoginRequiredMixin, UpdateView):
+    model = Post
+    fields = ("title", "body", "image")
+    template_name = "cat_network/post_create.html"
+
+    def get_success_url(self):
+        return reverse_lazy("cat_network:cat-detail", kwargs={"pk": self.object.author.id})
+
+
+class PostDeleteView(LoginRequiredMixin, DeleteView):
+    model = Post
+    success_url = reverse_lazy("cat_network:cat-detail")
+    template_name = "cat_network/delete.html"
+
+    def get_success_url(self):
+        return reverse_lazy("cat_network:cat-detail", kwargs={"pk": self.object.author.id})
 
 
 class ToggleLikeView(LoginRequiredMixin, View):
@@ -101,7 +124,7 @@ class CommentListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['post'] = Post.objects.get(pk=self.kwargs.get('pk'))  # Передаем объект поста
+        context['post'] = Post.objects.get(pk=self.kwargs.get('pk'))
         return context
 
 
@@ -130,7 +153,7 @@ class CommentUpdateView(LoginRequiredMixin, UpdateView):
 
 class CommentDeleteView(LoginRequiredMixin, DeleteView):
     model = Comment
-    template_name = "cat_network/comment_delete.html"
+    template_name = "cat_network/delete.html"
 
     def get_success_url(self):
         return reverse_lazy("cat_network:comment-list", kwargs={"pk": self.kwargs["pk"]})

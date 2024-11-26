@@ -4,13 +4,17 @@
     {% csrf_token %}
     <button type="submit">Logout</button>
   </form>
+  <ul>
+    <li><a href="{% url 'cat_network:cat-detail' pk=user.id %}">My Page</a></li>
+    <li><a href="{% url 'cat_network:post-list' %}">Posts</a></li>
+    <li><a href="{% url 'cat_network:cat-list' %}">Cats</a></li>
+  </ul>
 {% else %}
   <a href="{% url 'login' %}">Sign In</a>
   <a href="{% url 'cat_network:registration' %}">Sign Up</a>
+  <ul>
+    <li><a href="/">Home page</a></li>
+    <li><a href="{% url 'cat_network:post-list' %}">Posts</a></li>
+    <li><a href="{% url 'cat_network:cat-list' %}">Cats</a></li>
+  </ul>
 {% endif %}
-
-<ul>
-  <li><a href="/">Home page</a></li>
-  <li><a href="{% url 'cat_network:post-list' %}">Posts</a></li>
-  <li><a href="{% url 'cat_network:cat-list' %}">Cats</a></li>
-</ul>
