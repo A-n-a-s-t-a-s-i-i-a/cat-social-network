@@ -90,7 +90,7 @@ class ToggleLikeView(LoginRequiredMixin, View):
         return HttpResponseRedirect(f"{referer_url}#post-{post.id}")
 
 
-class CommentListView(ListView):
+class CommentListView(LoginRequiredMixin, ListView):
     model = Comment
     template_name = "cat_network/comment_list.html"
     context_object_name = 'comments'
@@ -175,9 +175,15 @@ class CatUserCreateView(CreateView):
         return redirect(self.success_url)
 
 
-class CatUserDetailView(DetailView):
+class CatUserDetailView(LoginRequiredMixin, DetailView):
     model = CatUser
     template_name = "cat_network/cat_detail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_liked_posts = Like.objects.filter(user=self.request.user).values_list('post_id', flat=True)
+        context['user_liked_posts'] = set(user_liked_posts)
+        return context
 
 
 class CatUserFollowersView(DetailView):

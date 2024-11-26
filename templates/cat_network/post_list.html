@@ -12,9 +12,9 @@
   <a href="{% url 'cat_network:post-create' %}">Create New Post</a>
   {% for post in post_list %}
     <div id="post-{{ post.id }}">
-      <h2><a href="{% url 'cat_network:post-detail' pk=post.id %}">{{ post.title }}</a></h2>
+      <h2><a href="{% url 'cat_network:post-detail' pk=post.id %}">{{ post.title }} - {{ post.author }}</a></h2>
       {% if post.image %}
-        <img src="{{ post.image.url }}" alt="" width="300px">
+        <img src="{{ post.image.url }}" alt="" width="100px">
       {% endif %}
       <div>
         <form method="post" action="{% url 'cat_network:toggle-like' %}">
