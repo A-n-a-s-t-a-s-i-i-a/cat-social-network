@@ -18,6 +18,6 @@
     {% if catuser.bio %}
       <p>Bio: {{ catuser.bio }}</p>
     {% endif %}
-    <a href="#">Followers: {{ catuser.followers.count }}</a>
+    <a href="{% url 'cat_network:cat-followers' pk=catuser.id %}">Followers: {{ catuser.followers.count }}</a>
   </div>
 {% endblock %}

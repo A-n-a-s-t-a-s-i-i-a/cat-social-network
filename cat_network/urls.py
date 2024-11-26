@@ -3,7 +3,7 @@ from django.urls import path
 from cat_network.models import CatUser
 from cat_network.views import index, PostListView, PostDetailView, PostCreateView, ToggleLikeView, CommentListView, \
     CommentCreateView, CatUserListView, CatUserCreateView, CommentUpdateView, CommentDeleteView, CatUserDetailView, \
-    follow_catuser
+    follow_catuser, CatUserFollowersView
 
 urlpatterns = [
     path('', index, name='index'),
@@ -18,6 +18,7 @@ urlpatterns = [
     path("cats/", CatUserListView.as_view(), name="cat-list"),
     path('catuser/<int:pk>/follow/', follow_catuser, name='follow-catuser'),
     path("cats/<int:pk>/", CatUserDetailView.as_view(), name="cat-detail"),
+    path("cats/<int:pk>/followers/", CatUserFollowersView.as_view(), name="cat-followers"),
     path("registration/", CatUserCreateView.as_view(), name="registration"),
 ]
 

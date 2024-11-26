@@ -9,7 +9,7 @@
     <input type="submit" value="👀">
   </form>
   {% for cat in cat_users %}
-    <div>
+    <div id="cat-{{ cat.id }}">
       {% if cat.profile_picture %}
         <img src="{{ cat.profile_picture.url }}" alt="" width="100px">
       {% endif %}

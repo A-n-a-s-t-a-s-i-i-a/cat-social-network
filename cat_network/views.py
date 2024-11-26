@@ -180,14 +180,21 @@ class CatUserDetailView(DetailView):
     template_name = "cat_network/cat_detail.html"
 
 
+class CatUserFollowersView(DetailView):
+    model = CatUser
+    template_name = "cat_network/cat_followers.html"
+    paginate_by = 5
+
+
 @login_required
 def follow_catuser(request, pk):
     cat = get_object_or_404(CatUser, pk=pk)
-    print(f"ID cat: {pk}")
     catuser = request.user
-    print(f"ID catuser: {catuser.id}")
     if catuser in cat.followers.all():
         cat.followers.remove(catuser)
     else:
         cat.followers.add(catuser)
-    return redirect("cat_network:cat-list")
+
+
+    referer_url = request.META.get('HTTP_REFERER', '/')
+    return HttpResponseRedirect(f"{referer_url}#cat-{pk}")
