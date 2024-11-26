@@ -4,10 +4,14 @@
 {% endblock %}
 
 {% block content %}
+  <a href="{% url 'cat_network:cat-update' pk=catuser.id %}">Add/Update Info</a>
   <div>
     <h2>{{ catuser.username }}</h2>
     {% if catuser.profile_picture %}
       <img src="{{ catuser.profile_picture.url }}" alt="" width="100px">
+    {% endif %}
+    {% if catuser.first_name %}
+      <p>Name: {{ catuser.first_name }}</p>
     {% endif %}
     {% if catuser.age %}
       <p>Age: {{ catuser.age }}</p>

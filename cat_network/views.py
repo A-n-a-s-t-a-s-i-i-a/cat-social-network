@@ -139,7 +139,7 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy("cat_network:comment-list",   kwargs={"pk": self.kwargs["pk"]})
+        return reverse_lazy("cat_network:comment-list",   kwargs={"pk": self.object.post.id})
 
 
 class CommentUpdateView(LoginRequiredMixin, UpdateView):
@@ -148,7 +148,7 @@ class CommentUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "cat_network/comment_create.html"
 
     def get_success_url(self):
-        return reverse_lazy("cat_network:comment-list",   kwargs={"pk": self.kwargs["pk"]})
+        return reverse_lazy("cat_network:comment-list",   kwargs={"pk": self.object.post.id})
 
 
 class CommentDeleteView(LoginRequiredMixin, DeleteView):
@@ -156,7 +156,7 @@ class CommentDeleteView(LoginRequiredMixin, DeleteView):
     template_name = "cat_network/delete.html"
 
     def get_success_url(self):
-        return reverse_lazy("cat_network:comment-list", kwargs={"pk": self.kwargs["pk"]})
+        return reverse_lazy("cat_network:comment-list", kwargs={"pk": self.object.post.id})
 
 
 class CatUserListView(ListView):
@@ -188,15 +188,13 @@ class CatUserCreateView(CreateView):
     model = CatUser
     form_class = CatUserCreationForm
     template_name = "registration/registration_form.html"
-    success_url = reverse_lazy("cat_network:index")
 
     def form_valid(self, form):
         user = form.save()
         user.profile_picture = self.request.FILES.get('profile_picture')
         user.save()
         login(self.request, user)
-        return redirect(self.success_url)
-
+        return redirect(reverse_lazy("cat_network:cat-detail", kwargs={"pk": user.pk}))
 
 class CatUserDetailView(LoginRequiredMixin, DetailView):
     model = CatUser
@@ -207,6 +205,15 @@ class CatUserDetailView(LoginRequiredMixin, DetailView):
         user_liked_posts = Like.objects.filter(user=self.request.user).values_list('post_id', flat=True)
         context['user_liked_posts'] = set(user_liked_posts)
         return context
+
+
+class CatUserUpdateView(LoginRequiredMixin, UpdateView):
+    model = CatUser
+    fields = ("username", "first_name", "profile_picture", "age", "breed", "bio")
+    template_name = "cat_network/cat_update.html"
+
+    def get_success_url(self):
+        return reverse_lazy("cat_network:cat-detail", kwargs={"pk": self.object.pk})
 
 
 class CatUserFollowersView(DetailView):

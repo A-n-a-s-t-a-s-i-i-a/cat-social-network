@@ -7,8 +7,8 @@
     <div>
       {{ comment.author }} - {{ comment.text }}
       {% if comment.author.id == user.id %}
-        <a href="{% url 'cat_network:comment-update' pk=post.id %}">Update Comment</a>
-        <a href="{% url 'cat_network:comment-delete' pk=post.id %}">Delete Comment</a>
+        <a href="{% url 'cat_network:comment-update' pk=comment.id %}">Update Comment</a>
+        <a href="{% url 'cat_network:comment-delete' pk=comment.id %}">Delete Comment</a>
       {% endif %}
     </div>
   {% endfor %}
