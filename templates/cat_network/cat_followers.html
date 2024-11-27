@@ -6,7 +6,9 @@
 {% block content %}
   {% for follower in catuser.followers.all %}
     <div>
-      <img src="{{ follower.profile_picture.url }}" alt="" width="100px">
+      {% if follower.profile_picture %}
+        <img src="{{ follower.profile_picture.url }}" alt="" width="100px">
+      {% endif %}
       <a href="{% url 'cat_network:cat-detail' pk=follower.id %}">{{ follower.username }}</a>
     </div>
   {% endfor %}

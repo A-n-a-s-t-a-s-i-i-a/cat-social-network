@@ -7,6 +7,7 @@ from cat_network.models import CatUser, Post, Comment, Like
 
 @admin.register(CatUser)
 class CatUserAdmin(UserAdmin):
+    list_display = UserAdmin.list_display + ('breed', )
     fieldsets = UserAdmin.fieldsets + (("Additional Info:", {"fields": ("breed", "age", "bio", "profile_picture")}),)
     add_fieldsets = UserAdmin.add_fieldsets + (("Additional Info:", {"fields": ("breed", "age", "username", "profile_picture")}),)
 
