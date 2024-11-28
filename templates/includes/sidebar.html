@@ -1,20 +1,31 @@
-{% if user.is_authenticated %}
-  <h2>Cat: <a href="#">{{ user.username }}</a></h2>
-  <form method="post" action="{% url 'logout' %}">
-    {% csrf_token %}
-    <button type="submit">Logout</button>
-  </form>
-  <ul>
-    <li><a href="{% url 'cat_network:cat-detail' pk=user.id %}">My Page</a></li>
-    <li><a href="{% url 'cat_network:post-list' %}">Posts</a></li>
-    <li><a href="{% url 'cat_network:cat-list' %}">Cats</a></li>
+<div class="d-flex flex-column p-3 border rounded shadow-sm bg-color">
+  {% if user.is_authenticated %}
+    <h2 class="mb-4 d-flex align-items-center">
+      <i class="fas fa-cat me-2"></i> {{ user.username }}
+    </h2>
+    <ul class="nav flex-column list-unstyled">
+      <li class="nav-item mb-3">
+        <a href="{% url 'cat_network:cat-detail' pk=user.id %}" class="nav-link d-flex align-items-center">
+          <i class="fas fa-cat me-2"></i> My Page
+        </a>
+      </li>
+  {% else %}
+    <ul class="nav flex-column list-unstyled">
+      <li class="nav-item mb-3">
+        <a href="/" class="nav-link d-flex align-items-center">
+          <i class="fas fa-home me-2"></i> Home page
+        </a>
+      </li>
+  {% endif %}
+    <li class="nav-item mb-3">
+      <a href="{% url 'cat_network:post-list' %}" class="nav-link d-flex align-items-center">
+        <i class="fas fa-pen me-2"></i> Posts
+      </a>
+    </li>
+    <li class="nav-item mb-3">
+      <a href="{% url 'cat_network:cat-list' %}" class="nav-link d-flex align-items-center">
+        <i class="fas fa-paw me-2"></i> Cats
+      </a>
+    </li>
   </ul>
-{% else %}
-  <a href="{% url 'login' %}">Sign In</a>
-  <a href="{% url 'cat_network:registration' %}">Sign Up</a>
-  <ul>
-    <li><a href="/">Home page</a></li>
-    <li><a href="{% url 'cat_network:post-list' %}">Posts</a></li>
-    <li><a href="{% url 'cat_network:cat-list' %}">Cats</a></li>
-  </ul>
-{% endif %}
+</div>
