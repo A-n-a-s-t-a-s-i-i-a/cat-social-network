@@ -1,9 +1,44 @@
 {% extends "base.html" %}
 {% block content %}
-  <ul>
-    <li>Num of Posts: {{ num_posts }}</li>
-    <li>Num of Comments: {{ num_comments }}</li>
-    <li>Num of Likes: {{ num_likes }}</li>
-    <li>Num of Cats: {{ num_cats }}</li>
-  </ul>
+  <div class="container my-5">
+    <h2 class="text-center mb-4">Cat Social Network Overview</h2>
+    <div class="row">
+      <div class="col-md-3">
+        <div class="card shadow-sm animate__animated animate__fadeInUp">
+          <div class="card-body text-center">
+            <i class="fas fa-pencil-alt fa-3x mb-3"></i>
+            <h5 class="card-title">Posts</h5>
+            <p class="card-text">{{ num_posts }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card shadow-sm animate__animated animate__fadeInUp">
+          <div class="card-body text-center">
+            <i class="fas fa-comments fa-3x mb-3"></i>
+            <h5 class="card-title">Comments</h5>
+            <p class="card-text">{{ num_comments }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card shadow-sm animate__animated animate__fadeInUp">
+          <div class="card-body text-center">
+            <i class="fas fa-heart fa-3x mb-3"></i>
+            <h5 class="card-title">Likes</h5>
+            <p class="card-text">{{ num_likes }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card shadow-sm animate__animated animate__fadeInUp">
+          <div class="card-body text-center">
+            <i class="fas fa-paw fa-3x mb-3"></i>
+            <h5 class="card-title">Cats</h5>
+            <p class="card-text">{{ num_cats }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
