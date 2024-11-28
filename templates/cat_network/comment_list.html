@@ -1,16 +1,33 @@
 {% extends "base.html" %}
+
 {% block title %}
   <title>Comments</title>
 {% endblock %}
+
 {% block content %}
-  {% for comment in comments %}
-    <div>
-      {{ comment.author }} - {{ comment.text }}
-      {% if comment.author.id == user.id %}
-        <a href="{% url 'cat_network:comment-update' pk=comment.id %}">Update Comment</a>
-        <a href="{% url 'cat_network:comment-delete' pk=comment.id %}">Delete Comment</a>
-      {% endif %}
+  <div class="container my-5">
+    <h2 class="text-center mb-4">Comments</h2>
+  
+    <div class="list-group">
+      {% for comment in comments %}
+        <div class="list-group-item d-flex justify-content-between align-items-center">
+
+          <div>
+            <strong>{{ comment.author }}</strong>
+            <p>{{ comment.text }}</p>
+          </div>
+          {% if comment.author.id == user.id %}
+            <div class="btn-group" role="group">
+              <a href="{% url 'cat_network:comment-update' pk=comment.id %}" class="btn btn-warning btn-sm">Update</a>
+              <a href="{% url 'cat_network:comment-delete' pk=comment.id %}" class="btn btn-danger btn-sm">Delete</a>
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
     </div>
-  {% endfor %}
-  <a href="{% url 'cat_network:comment-create' pk=post.id %}">Create Comment</a>
+
+    <div class="text-center mt-4">
+      <a href="{% url 'cat_network:comment-create' pk=post.id %}" class="btn btn-primary">Create Comment</a>
+    </div>
+  </div>
 {% endblock %}

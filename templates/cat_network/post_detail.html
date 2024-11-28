@@ -4,29 +4,35 @@
 {% endblock %}
 
 {% block content %}
-  <div>
-    <h2>{{ post.title }} - {{ post.author }}</h2>
+  <div class="container my-5">
+    <h2 class="text-center mb-4">{{ post.title }} <small class="text-muted">by {{ post.author }}</small></h2>
+
     {% if post.image %}
-      <img src="{{ post.image.url }}" alt="" width="100px">
-    {% endif %}
-    <p>{{ post.body }}</p>
-    <div>
-      <div>
-        <form method="post" action="{% url 'cat_network:toggle-like' %}">
-          {% csrf_token %}
-          <input type="hidden" name="post_id" value="{{ post.id }}">
-          {{ like_form }}
-          <button type="submit">
-              {% if post.id in user_liked_posts %}
-                  🩷
-              {% else %}
-                  🖤
-              {% endif %}
-              {{ post.like_set.count }}
-          </button>
-        </form>
-        <a href="{% url 'cat_network:comment-list' pk=post.id %}">💬 {{ post.comment_set.count }}</a>
+      <div class="text-center mb-4">
+        <img src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid rounded">
       </div>
+    {% endif %}
+
+    <p class="lead">{{ post.body }}</p>
+
+    <div class="d-flex justify-content-start align-items-center">
+      <form method="post" action="{% url 'cat_network:toggle-like' %}" class="d-inline mr-3">
+        {% csrf_token %}
+        <input type="hidden" name="post_id" value="{{ post.id }}">
+        {{ like_form }}
+        <button type="submit" class="btn btn-outline-primary p-2">
+            {% if post.id in user_liked_posts %}
+                🩷
+            {% else %}
+                🖤
+            {% endif %}
+            <span>{{ post.like_set.count }}</span>
+        </button>
+      </form>
+
+      <a href="{% url 'cat_network:comment-list' pk=post.id %}" class="btn btn-outline-secondary p-2">
+        💬 {{ post.comment_set.count }} Comments
+      </a>
     </div>
   </div>
 {% endblock %}
