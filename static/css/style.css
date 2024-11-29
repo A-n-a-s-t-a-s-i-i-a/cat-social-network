@@ -1,91 +1,91 @@
 body {
-  background-color: #fdf1f1;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+    background-color: #fdf1f1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 * {
-  color: #391901;
+    color: #391901;
 }
 
 a {
-  color: #391901;
+    color: #391901;
 }
 
 .container-fluid {
-  display: flex;
-  flex: 1;
-  height: 100%;
+    display: flex;
+    flex: 1;
+    height: 100%;
 }
 
 .sidebar {
-  background-color: #ffe4e1;
-  width: 250px;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
-  margin-bottom: 20px;
+    background-color: #ffe4e1;
+    width: 250px;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .sidebar a {
-  text-decoration: none;
-  font-weight: bold;
+    text-decoration: none;
+    font-weight: bold;
 }
 
 .sidebar a:hover {
-  color: #e994ac;
+    color: #e994ac;
 }
 
 .content {
-  flex: 1;
-  padding: 20px;
+    flex: 1;
+    padding: 20px;
 }
 
 footer {
-  background-color: #ffe4e1;
-  color: #4a4a4a;
-  padding: 1rem;
-  text-align: center;
-  margin-top: auto;
+    background-color: #ffe4e1;
+    color: #4a4a4a;
+    padding: 1rem;
+    text-align: center;
+    margin-top: auto;
 }
 
 .navbar {
-  background-color: #ffe4e1;
+    background-color: #ffe4e1;
 }
 
 .btn-lavender {
-  background-color: #e994ac;
-  color: white;
+    background-color: #e994ac;
+    color: white;
 }
 
 .btn-lavender:hover {
-  background-color: #e994ac;
+    background-color: #e994ac;
 }
 
 .btn-primary, .bg-primary {
-  background-color: #391901!important;
-  color: white!important;
-  border: 2px solid #391901!important;
+    background-color: #391901!important;
+    color: white!important;
+    border: 2px solid #391901!important;
 }
 
 .btn-primary:hover, .bg-primary:hover{
-  background-color: #fff!important;
-  color: #391901!important;
-  border: 2px solid #391901!important;
+    background-color: #fff!important;
+    color: #391901!important;
+    border: 2px solid #391901!important;
 }
 
 .btn-secondary {
-  background-color: #fff;
-  color: #3e3634;
-  border: 2px solid #3e3634;
+    background-color: #fff;
+    color: #3e3634;
+    border: 2px solid #3e3634;
 }
 
 .btn-secondary:hover {
-  background-color: #3e3634;
-  color: white;
-  border: 2px solid #3e3634;
+    background-color: #3e3634;
+    color: white;
+    border: 2px solid #3e3634;
 }
 
 .navbar-nav {
@@ -105,5 +105,5 @@ footer {
 }
 
 .block {
-  background-color: #ffe4e1;
+    background-color: #ffe4e1;
 }

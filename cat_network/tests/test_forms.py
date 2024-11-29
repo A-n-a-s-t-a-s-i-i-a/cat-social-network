@@ -37,9 +37,15 @@ class PostSearchFormTest(TestCase):
         user1 = CatUser.objects.create(username="catuser1", first_name="Cat", age=2)
         user2 = CatUser.objects.create(username="catuser2", first_name="Dog", age=3)
 
-        Post.objects.create(title="First post", body="Content of first post", author=user1)
-        Post.objects.create(title="Second post", body="Content of second post", author=user2)
-        Post.objects.create(title="Another post", body="Content of another post", author=user1)
+        Post.objects.create(
+            title="First post", body="Content of first post", author=user1
+        )
+        Post.objects.create(
+            title="Second post", body="Content of second post", author=user2
+        )
+        Post.objects.create(
+            title="Another post", body="Content of another post", author=user1
+        )
 
     def test_search_form_fields(self):
         form = PostSearchForm()

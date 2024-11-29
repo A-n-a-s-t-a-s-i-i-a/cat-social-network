@@ -68,4 +68,3 @@ class AdminTestCase(TestCase):
         url = reverse("admin:cat_network_like_changelist")
         response = self.client.get(url)
         self.assertContains(response, self.like.post.title)
-
