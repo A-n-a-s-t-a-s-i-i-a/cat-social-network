@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container my-5 text-center">
+    <h2 class="mb-4">Are you SSSure?</h2>
+
+    <form action="" method="post" novalidate class="d-inline-block">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger btn-lg mx-2">Delete</button>
+    </form>
+
+    <input type="button" onclick="history.back();" value="Cancel" class="btn btn-secondary btn-lg mx-2">
+  </div>
+{% endblock %}

@@ -1,0 +1,31 @@
+<div class="d-flex flex-column p-3 border rounded shadow-sm bg-color">
+  {% if user.is_authenticated %}
+    <h2 class="mb-4 d-flex align-items-center">
+      <i class="fas fa-cat me-2"></i> {{ user.username }}
+    </h2>
+    <ul class="nav flex-column list-unstyled">
+      <li class="nav-item mb-3">
+        <a href="{% url 'cat_network:cat-detail' pk=user.id %}" class="nav-link d-flex align-items-center">
+          <i class="fas fa-cat me-2"></i> My Page
+        </a>
+      </li>
+  {% else %}
+    <ul class="nav flex-column list-unstyled">
+      <li class="nav-item mb-3">
+        <a href="/" class="nav-link d-flex align-items-center">
+          <i class="fas fa-home me-2"></i> Home page
+        </a>
+      </li>
+  {% endif %}
+    <li class="nav-item mb-3">
+      <a href="{% url 'cat_network:post-list' %}" class="nav-link d-flex align-items-center">
+        <i class="fas fa-pen me-2"></i> Posts
+      </a>
+    </li>
+    <li class="nav-item mb-3">
+      <a href="{% url 'cat_network:cat-list' %}" class="nav-link d-flex align-items-center">
+        <i class="fas fa-paw me-2"></i> Cats
+      </a>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}
+  <title>{{ catuser.username }}</title>
+{% endblock %}
+
+{% block content %}
+  <div class="container my-5">
+    <div class="row">
+      <div class="col-md-4 d-flex flex-column align-items-center">
+        <h2 class="text-center mb-4">{{ catuser.username }}</h2>
+        
+        {% if catuser.profile_picture %}
+          <img src="{{ catuser.profile_picture.url }}" alt="{{ catuser.username }}'s profile picture" 
+               class="img-fluid rounded-circle" 
+               style="width: 150px; height: 150px; object-fit: cover;">
+        {% else %}
+          <div class="bg-secondary rounded-circle d-inline-block" 
+               style="width: 150px; height: 150px;"></div>
+        {% endif %}
+        
+        <div class="mb-3 text-center">
+          {% if catuser.first_name %}
+            <p><strong>Name:</strong> {{ catuser.first_name }}</p>
+          {% endif %}
+          {% if catuser.age %}
+            <p><strong>Age:</strong> {{ catuser.age }}</p>
+          {% endif %}
+          {% if catuser.breed %}
+            <p><strong>Breed:</strong> {{ catuser.breed }}</p>
+          {% endif %}
+          {% if catuser.bio %}
+            <p><strong>Bio:</strong> {{ catuser.bio }}</p>
+          {% endif %}
+        </div>
+
+        <a href="{% url 'cat_network:cat-update' pk=catuser.id %}" class="btn btn-primary w-100 mb-3">Add/Update Info</a>
+        <a href="{% url 'cat_network:cat-followers' pk=catuser.id %}" class="btn btn-secondary w-100">Followers: {{ catuser.followers.count }}</a>
+      </div>
+
+      <div class="col-md-8">
+        {% if catuser.post_set.exists %}
+          <h3 class="mb-4">Posts:</h3>
+          <a href="{% url 'cat_network:post-create' %}?next=cat-detail&pk={{ catuser.id }}" class="btn btn-lavender mb-3">Create New Post</a>
+          
+          {% for post in catuser.post_set.all %}
+            <div id="post-{{ post.id }}" class="card shadow-sm mb-4 animate__animated animate__fadeInUp">
+              <div class="card-body">
+                <h5 class="card-title">{{ post.title }} - <small class="text-muted">{{ post.author }}</small></h5>
+                
+                {% if post.image %}
+                  <div class="mb-3">
+                    <img src="{{ post.image.url }}" alt="Post image" class="img-fluid rounded" style="width: 200px; height: 200px; object-fit: cover;">
+                  </div>
+                {% endif %}
+                
+                <p>{{ post.body }}</p>
+                <a href="{% url 'cat_network:post-update' pk=post.id %}" class="btn btn-warning btn-sm me-2">Update</a>
+                <a href="{% url 'cat_network:post-delete' pk=post.id %}" class="btn btn-danger btn-sm">Delete</a>
+                
+                <div class="mt-3 d-flex align-items-center">
+                  <form method="post" action="{% url 'cat_network:toggle-like' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="post_id" value="{{ post.id }}">
+                    {{ like_form }}
+                    <button type="submit" class="btn p-0" style="font-size: 1.2rem;">
+                        {% if post.id in user_liked_posts %}
+                            🩷
+                        {% else %}
+                            🖤
+                        {% endif %}
+                        {{ post.like_set.count }}
+                    </button>
+                  </form>
+                  <a href="{% url 'cat_network:comment-list' pk=post.id %}" class="btn p-0" style="font-size: 1.2rem;">💬 {{ post.comment_set.count }}</a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
