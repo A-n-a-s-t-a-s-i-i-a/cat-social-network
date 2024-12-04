@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <div class="container my-5">
+    <h2 class="text-center mb-4">Update Cat's Profile</h2>
+    <form action="" method="post" novalidate enctype="multipart/form-data" class="block p-4 rounded shadow-sm">
+      {% csrf_token %}
+      
+      {{ form|crispy }}
+      
+      <div class="d-flex justify-content-center mt-4">
+        <input type="submit" value="Submit 😺" class="btn btn-primary btn-lg">
+      </div>
+    </form>
+  </div>
+{% endblock %}

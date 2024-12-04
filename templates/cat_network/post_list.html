@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+{% block title %}
+  <title>Posts</title>
+{% endblock %}
+
+{% block content %}
+  <div class="mb-4">
+    <form method="get" action="" class="d-flex justify-content-center w-100">
+      <div class="w-100">
+        {{ search_form|crispy }}
+      </div>
+      <input type="submit" value="👀" class="btn btn-primary ml-2" style="height: calc(2.25rem + 2px);">
+    </form>
+  </div>
+
+
+  <h1 class="text-center mb-4">All Posts:</h1>
+
+  <div class="text-center mb-4">
+    <a href="{% url 'cat_network:post-create' %}?next=post-list" class="btn btn-lavender mb-3">Create New Post</a>
+  </div>
+
+  {% for post in post_list %}
+    <div id="post-{{ post.id }}" class="mb-4 border rounded p-3">
+      <h2>
+        <a href="{% url 'cat_network:post-detail' pk=post.id %}" class="text-decoration-none">{{ post.title }}</a>
+        <small class="text-muted">by {{ post.author }}</small>
+      </h2>
+
+      {% if post.image %}
+        <div class="mb-3">
+          <img src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid" style="max-width: 200px;">
+        </div>
+      {% endif %}
+
+      <div class="d-flex justify-content-start align-items-center">
+        <form method="post" action="{% url 'cat_network:toggle-like' %}" class="mr-3">
+          {% csrf_token %}
+          <input type="hidden" name="post_id" value="{{ post.id }}">
+          <button type="submit" class="btn btn-outline-primary p-2">
+              {% if post.id in user_liked_posts %}
+                  🩷
+              {% else %}
+                  🖤
+              {% endif %}
+              <span>{{ post.like_set.count }}</span>
+          </button>
+        </form>
+        <a href="{% url 'cat_network:comment-list' pk=post.id %}" class="btn btn-outline-secondary p-2">
+          💬 {{ post.comment_set.count }} Comments
+        </a>
+      </div>
+    </div>
+  {% endfor %}
+
+{% endblock %}
