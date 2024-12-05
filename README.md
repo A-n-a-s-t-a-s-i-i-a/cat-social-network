@@ -18,4 +18,5 @@ A social network for cat owners where they can write posts, display photos and s
 
 ### Test User:
 login: ruby
+
 pass: love1488
