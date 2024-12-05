@@ -16,6 +16,6 @@ A social network for cat owners where they can write posts, display photos and s
 - SQLite (for development)
 
 
-###Test User:
+### Test User:
 login: ruby
 pass: love1488
