@@ -20,3 +20,6 @@ A social network for cat owners where they can write posts, display photos and s
 login: ruby
 
 pass: love1488
+
+### Link to project
+https://cat-social-network.onrender.com/
