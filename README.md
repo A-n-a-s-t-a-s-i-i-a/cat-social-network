@@ -65,7 +65,7 @@ python manage.py runserver
 
 login: ruby
 
-pass: love1488
+pass: user2025
 
 ## Link to project
 https://cat-social-network.onrender.com/

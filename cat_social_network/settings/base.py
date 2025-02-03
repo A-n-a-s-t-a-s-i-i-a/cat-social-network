@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     "cat_network",
     "crispy_forms",
     "crispy_bootstrap4",
+    "cloudinary_storage",
+    "cloudinary",
 ]
 
 MIDDLEWARE = [
@@ -128,7 +130,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "cat_network.CatUser"
 
-MEDIA_URL = "/media/"
+MEDIA_URL = "https://res.cloudinary.com/dxkkysmap/image/upload/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
