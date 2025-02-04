@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from cloudinary.models import CloudinaryField
 
 list_of_breeds = [
     ("Abyssinian", "Abyssinian"),
@@ -50,9 +51,8 @@ class CatUser(AbstractUser):
     followers = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name="catusers", blank=True
     )
-    profile_picture = models.ImageField(
-        upload_to="profile_pictures", null=True, blank=True
-    )
+    profile_picture = CloudinaryField("image", null=True, blank=True,
+                                      resource_type="image", folder="profile_pictures")
 
     def __str__(self):
         return self.username
@@ -64,7 +64,8 @@ class Post(models.Model):
     title = models.CharField(max_length=100)
     body = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(upload_to="posts", null=True, blank=True)
+    image = CloudinaryField("image", null=True, blank=True,
+                            resource_type="image", folder="posts")
 
     def __str__(self):
         return f"{self.title} - {self.author}"
