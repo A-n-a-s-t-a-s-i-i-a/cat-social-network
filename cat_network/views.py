@@ -36,7 +36,7 @@ def index(request) -> HttpResponse:
 class PostListView(ListView):
     model = Post
     template_name = "cat_network/post_list.html"
-    paginate_by = 5
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -56,7 +56,9 @@ class PostListView(ListView):
         form = PostSearchForm(self.request.GET)
         if form.is_valid():
             return queryset.filter(title__icontains=form.cleaned_data["title"])
-        return queryset
+        print(queryset.query)
+
+        return queryset.order_by("-created_at")
 
 
 class PostDetailView(LoginRequiredMixin, DetailView):
