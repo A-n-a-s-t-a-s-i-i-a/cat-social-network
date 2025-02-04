@@ -67,6 +67,9 @@ class Post(models.Model):
     image = CloudinaryField("image", null=True, blank=True,
                             resource_type="image", folder="posts")
 
+    class Meta:
+        ordering = ["-created_at"]
+
     def __str__(self):
         return f"{self.title} - {self.author}"
 
